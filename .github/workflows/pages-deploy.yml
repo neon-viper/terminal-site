@@ -16,12 +16,8 @@ jobs:
           npm ci
           npm run build
 
-      - name: Rename dist/ to docs/
-        run: |
-          mv dist docs
-
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.2.5
         with:
           branch: github-pages
-          folder: docs
+          folder: dist
