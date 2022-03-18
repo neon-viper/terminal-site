@@ -3,20 +3,24 @@ name: NodeJS with Webpack
 on:
   push:
     branches: [ master ]
-    
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        
+
       - name: Install and build
         run: |
           npm ci
           npm run build
-      
-      - name: Deploy to GitHub Pages#
+
+      - name: Rename dist/ to docs/
+        run: |
+          mv dist docs
+
+      - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.2.5
         with:
           branch: github-pages
