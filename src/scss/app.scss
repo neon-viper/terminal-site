@@ -1,0 +1,19 @@
+html, body {
+  background: #000;
+  color: #FFF;
+  font-family: 'monospace';
+}
+
+.full-width { display: block; width: 100% }
+.text-green { color: #33bb5e; }
+.text-white { color: #FFFFFF; }
+.cursor { animation: phase 1s ease-out infinite; }
+
+@keyframes phase {
+  0% { opacity: 1.0; }
+  20% { opacity: 0.8; }
+  40% { opacity: 0.6; }
+  60% { opacity: 0.4; }
+  80% { opacity: 0.2; }
+  100% { opacity: 0.0; }
+}

@@ -1,0 +1,72 @@
+<app>
+    <terminal-line each="{ line in state.lines }" key={line.index} command={line.command} output={line.output}></terminal-line>
+    <terminal-input on-new-line={ (idx, str) => onNewLine(idx, str) }></terminal-input>
+
+    <script>
+        import Greeting from './greeting.riot';
+        import TerminalInput from './terminal-input.riot';
+        import TerminalLine from './terminal-line.riot';
+        import BlogService from "./blog.service";
+
+        const blogService = new BlogService();
+        export default {
+            components: {
+                Greeting,
+                TerminalInput,
+                TerminalLine
+            },
+            state: {
+                name: null,
+                lines: []
+            },
+            onNewLine(index, command) {
+                const lines = this.state.lines;
+
+                if (command === "clear") {
+                    this.update({
+                        lines: []
+                    })
+
+                    return;
+                }
+
+                const output = this.getOutput(command);
+                lines.push({
+                    index, command, output
+                });
+
+                this.update({
+                    lines: lines
+                });
+
+                console.log('on new line event fired!');
+            },
+            getOutput(command) {
+                const notFound = `-nvsh: ${command}: command not found`;
+                const map = {
+                    "whoami": "neon-viper",
+                    "lsb_release -a": "No LSB modules are available. \n Distributor ID: NeonViper \n Description: Neon Viper Web Shell (Lance) \n Release: 4.20 \n Codename: [Redacted]",
+                    "ls": "home discord blog",
+                    "ls -l": "home\ndiscord\nblog",
+                    "discord": notFound + " did you mean 'cat discord'?",
+                    "blog": notFound + " did you mean './blog'?",
+                    "./blog": blogService.getFormattedBlogPosts(),
+                    "cat discord": "Join the discord at <a href=\"https://discord.gg/neon-viper\">discord.gg/neon-viper</a>",
+                    "nyan": "Engaging nyan cat mode! enter 'cursor' to disable",
+                    "cursor": "Disabling nyan cat mode :("
+                }
+
+                if (command === "help") {
+                    const commands = Object.keys(map).filter(k => {
+                        const noop = ["ls -l", "./blog", "cat discord", "lsb_release -a", "cursor"];
+                        return !noop.includes(k);
+                    }).join(", ");
+
+                    return "Available commands: \n" + commands;
+                }
+
+                return map[command] ?? notFound;
+            }
+        }
+    </script>
+</app>
