@@ -1,7 +1,13 @@
 html, body {
   background: #000;
   color: #FFF;
-  font-family: 'monospace';
+  font-family:
+          "SFMono-Regular",
+          Consolas,
+          "Liberation Mono",
+          Menlo,
+          Courier,
+          monospace;
 }
 
 .full-width { display: block; width: 100% }
